@@ -1,0 +1,8 @@
+pillow
+python-barcode
+flask
+SQLAlchemy
+psycopg2-binary
+Flask-SQLAlchemy
+opencv-python
+pyzbar
