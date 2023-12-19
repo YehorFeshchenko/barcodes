@@ -1,6 +1,4 @@
-"""Python barcode generator (usage)"""
-
-from barcode import Code128
+from barcode import Code39
 from barcode.writer import ImageWriter
 from barcode.errors import BarcodeError
 
@@ -36,7 +34,7 @@ class BarcodeService:
     def generate(code):
         try:
             print(code)
-            result_image = Code128(code, writer=ImageWriter(format='png'))
+            result_image = Code39(code, writer=ImageWriter(format='png'))
             result_image.save('result', options={"module_width": 0.4, "module_height": 20})
         except Exception as e:
             print(f'Error encoding: {e}')

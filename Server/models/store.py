@@ -1,30 +1,33 @@
+# Server/models/store.py
+
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
 
 from Server.models.base import Base
-from Server.models.drug import drug_store_association
+from Server.models.address import Address
 
 
 class Store(Base):
     """stores"""
-    __tablename__ = 'drugstores'
-    uid = Column(Integer,
-                 Sequence('drugstores_uid_seq'),
-                 primary_key=True,
-                 server_default=Sequence('drugstores_uid_seq').next_value(),
-                 autoincrement=True)
+    __tablename__ = 'stores'
+    store_id = Column(Integer,
+                      Sequence('stores_store_id_seq'),
+                      primary_key=True,
+                      server_default=Sequence('stores_store_id_seq').next_value(),
+                      autoincrement=True)
     name = Column(Text, nullable=False)
-    phone = Column(Text, nullable=False)
-    address_id = Column(Integer, ForeignKey('addresses.uid', onupdate='CASCADE'))
+    address_id = Column(Integer, ForeignKey('addresses.address_id', onupdate='CASCADE'))
+    phone = Column(Text)
+    email = Column(Text)
+
+    components = relationship("Component", back_populates='store')
     address = relationship("Address", back_populates='stores')
-    chain_id = Column(Integer, ForeignKey('chains.uid', onupdate='CASCADE', ondelete='CASCADE'))
-    chain = relationship("Chain", back_populates='stores')
 
-    drugs = relationship('Drug', secondary=drug_store_association, back_populates='stores')
-
-    def __init__(self, uid, name):
-        self.uid = uid
+    def __init__(self, name, address_id, phone, email):
         self.name = name
+        self.address_id = address_id
+        self.phone = phone
+        self.email = email
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
